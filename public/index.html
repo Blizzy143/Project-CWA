@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="css/style.css" rel="stylesheet">
+  <title>TOY FANATICS</title>
+</head>
+
+<body>
+  <div class="my-banner">Toy Fanatics</div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item modal-preauth">
+            <button id="menu-signin" class="btn btn-outline-danger" data-bs-toggle="modal"
+              data-bs-target="#modal-signin">Sign
+              In/Up</button>
+          </li>
+          <li class="nav-item ">
+            <button id="menu-home" class="btn btn-outline-primary">Home</button>
+          </li>
+          <li class="nav-item modal-postauth">
+            <button id="menu-purchases" class="btn btn-outline-primary">Purchase</button>
+          </li>
+          <li class="nav-item modal-postauth">
+            <button id="menu-wishlist" class="btn btn-outline-primary">Wishlist</button>
+          </li>
+          <li class="nav-item modal-postauth">
+            <button id="menu-signout" class="btn btn-outline-danger">Sign Out</button>
+          </li>
+          
+        </ul>        
+
+        <li class="nav-item modal-postauth">
+          <form id="form-search" class="d-flex">
+            <input name="searchKeys" class="form-control me-2" type="search" placeholder="Enter keyword..." aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </li>        
+
+        <div class="dropdown modal-postauth">
+          <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Sort
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><button class="btn btn-primary" id="dropdown-item-name-increasing" href="#">Name - A to Z</button></li>
+            <li><button class="btn btn-primary" id="dropdown-item-name-decreasing" href="#">Name - Z to A</button></li>
+            <li><button class="btn btn-primary" id="dropdown-item-price-increasing" href="#">Price - Low to High</button></li>
+            <li><button class="btn btn-primary" id="dropdown-item-price-decreasing" href="#">Product Price - High to Low</button></li>
+          </ul>
+        </div>
+
+        <button id="menu-cart" class="nav-item btn btn-outline-success modal-postauth">
+          <img src="images/cart.jpg" width="30px"> (<span id="menu-cart-item-count">0</span>)
+        </button>
+        <button id="menu-profile" class="nav-item btn btn-outline-success modal-postauth">Profile</button>        
+      </div>
+    </div>
+    </div>
+  </nav>
+
+  <!-- Modal : Popup Info Box-->
+  <div class="modal fade" id="modal-infobox" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-infobox-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-infobox-title"></h5>
+        </div>
+        <div class="modal-body" id="modal-infobox-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal sign-in-->
+  <div class="modal fade" id="modal-signin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-signin-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-signin-title">Please, Sign In!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form-signin" method="post">
+            <div>
+              <input type="email" name="email" placeholder="email address">
+            </div>
+            <div>
+              <input type="password" name="password" placeholder="password">
+            </div>
+            <div>
+              <button class="btn btn-outline-primary" type="submit">Sign In</button>
+            </div>
+          </form>
+          <div class="mt-5">
+            No Account Yet?
+            <button id="button-show-signup-modal" class="btn btn-outline-info">Create New Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Sign Up -->
+  <div class="modal fade" id="modal-signup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-signup-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-signup-title">Create New Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="modal-signup-form" method="post">
+            <div>
+              <input type="email" name="email" placeholder="email address" required>
+            </div>
+            <div>
+              <input type="password" name="password" placeholder="password" required minlength="6">
+            </div>
+            <div>
+              <input type="password" name="passwordConfirm" placeholder="confirm password" required minlength="6">
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Create</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Transaction - purchase history -->
+  <div class="modal fade" id="modal-transaction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-transaction-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-transaction-title">Modal title</h5>
+        </div>
+        <div class="modal-body" id="modal-transaction-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Button trigger modal -->
+
+
+  <!-- Modal review form -->
+  <div class="modal fade" id="modal-review" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-review-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-review-title">Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-review-body">
+          <div>
+            <form method="post" id="form-review">
+            <input type="textarea" name="review_text_box" placeholder="Your Review on this item:" required focused>
+            <button type="click" id="addbtn"class="btn btn-outline-primary">Post</button>
+          </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal all reviews form -->
+  <div class="modal fade" id="modal-all-review" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-all-review" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-all-review">title</h5>
+        </div>
+        <div class="modal-body" id="modal-all-review-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal Product Wishlist form -->
+    <div class="modal fade" id="modal-pdt-wish" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-pdt-wish" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-pdt-wish-title" id="modal-pdt-wish">Hurray..Your Item Is In Wishlist</h5>
+        </div>
+        <div class="modal-body" id="modal-pdt-wish-body">Check wishlist tab to find your favourites at one place.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Root-->
+  <div id="root" class="bg-light p-5 m-3"></div>
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCXkp8-jqeM_v6MlF2w8v0tj3LEb5vJrPQ",
+      authDomain: "cmsc5373-krishna-lec0.firebaseapp.com",
+      projectId: "cmsc5373-krishna-lec0",
+      storageBucket: "cmsc5373-krishna-lec0.appspot.com",
+      messagingSenderId: "562674644584",
+      appId: "1:562674644584:web:b09126c641089f7e9b6ddd"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+
+  <script type="module" src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>  
+</body>
+
+</html>
