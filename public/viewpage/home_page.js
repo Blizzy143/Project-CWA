@@ -36,19 +36,6 @@ export async function home_page() {
     buildHomeScreen(products);
     let products1 =[]
 
-    /*var x1 = document.querySelector(".btn-page");
-    x1.addEventListener('click',e=>{
-        e.preventDefault();
-        const buttonVal=e.target.id;
-        console.log(buttonVal);
-
-        for(let i=buttonVal;i<=buttonVal+2;i++){
-            products1.push(products[i]);
-        }
-        
-        
-    })
-    buildHomeScreen(products1);*/
 }
 
 export function buildHomeScreen(products) {
