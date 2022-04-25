@@ -41,6 +41,7 @@ export async function addEventListeners() {
         buildHomeScreen(prod1);
 
     })
+  
 }
 
 function buildProductView(product, index) {

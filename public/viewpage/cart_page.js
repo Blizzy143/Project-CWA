@@ -80,12 +80,12 @@ export async function cart_page() {
         try{
             await checkout(cart);
             info('Success!','Checkout Complete!');
-            cart.clear();
+            cart.clear(); 
             MENU.CartItemCount.innerHTML = 0;
             history.pushState(null,null,ROUTE_PATHNAMES.HOME);
-            await home_page();
-        } catch(e){
-            if(DEV) console.log(e);
+            await home_page(); 
+        } catch(e){ 
+            if(DEV) console.log(e); 
             info('Checkout Failed', JSON.stringify(e));
         }
         enableButton(checkoutButton,label);

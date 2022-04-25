@@ -1,4 +1,4 @@
-//main root element
+
 export const root = document.getElementById('root');
 
 export const MENU = {
@@ -13,12 +13,12 @@ export const MENU = {
 }
 
 
-
 export const formSearch = document.getElementById('form-search');
 export const buttonNameAsc = document.getElementById('dropdown-item-name-increasing');
 export const buttonNameDesc = document.getElementById('dropdown-item-name-decreasing');
 export const buttonPriceAsc = document.getElementById('dropdown-item-price-increasing');
 export const buttonPriceDesc = document.getElementById('dropdown-item-price-decreasing');
+export const btnpage = document.querySelector(".btn-page");
 
 export const modalInfobox = {
     modal:new bootstrap.Modal(document.getElementById('modal-infobox'), {backdrop: 'static'}),

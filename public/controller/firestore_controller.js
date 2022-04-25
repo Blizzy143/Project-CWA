@@ -12,6 +12,7 @@ import {
     updateDoc,
     startAfter,
     limit,
+    deleteDoc,
 }
     from "https://www.gstatic.com/firebasejs/9.6.8/firebase-firestore.js";
 import { AccountInfo } from "../model/account_info.js";
@@ -20,6 +21,7 @@ import { COLLECTION_NAMES } from "../model/constants.js";
 import { Product } from "../model/product.js";
 import { ShoppingCart } from "../model/shopping_cart.js";
 import { product_wishlist } from "../model/product_wishlist.js";
+import { product_rating } from "../model/product_rating.js";
 const db = getFirestore();
 
 export async function getProductList() {
@@ -35,6 +37,19 @@ export async function getProductList() {
     return products;
 }
 
+export async function getallProductComment() {
+    const productcomments = [];
+    const q = query(collection(db, COLLECTION_NAMES.PRODUCT_COMMENTS));
+    const snapShot = await getDocs(q);
+
+    snapShot.forEach(doc => {
+        const p = new product_comment(doc.data());
+        p.set_docId(doc.id);
+        productcomments.push(p);
+    });
+    return productcomments;
+}
+
 export async function getProductComment(productId) {
     const pc = [];
     const docRef = query(collection(db, COLLECTION_NAMES.PRODUCT_COMMENTS), where('productId', '==', productId), orderBy('timestamp'));
@@ -46,6 +61,31 @@ export async function getProductComment(productId) {
         pc.push(p);
     });
     return pc;
+}
+
+export async function deleteProductComment(prodCommId){
+    const docRef = doc(db, COLLECTION_NAMES.PRODUCT_COMMENTS, prodCommId);
+    await deleteDoc(docRef);
+}
+
+export async function updateProductComment(prodCommId,newCom){
+    const docRef = doc(db, COLLECTION_NAMES.PRODUCT_COMMENTS, prodCommId);
+    await updateDoc(docRef,{
+        comment: newCom
+    })
+}
+
+export async function getProductRating(productId) {
+    const pr = [];
+    const docRef = query(collection(db, COLLECTION_NAMES.PRODUCT_RATING), where('productId', '==', productId), orderBy('timestamp'));
+    const docSnap = await getDocs(docRef);
+
+    docSnap.forEach(doc => {
+        const p = new product_rating(doc.data());
+        p.set_docId(p);
+        pr.push(p);
+    });
+    return pr;
 }
 
 
@@ -89,6 +129,11 @@ export async function updateAccountInfo(uid, updateInfo) {
 }
 export async function addproductcomment(comment) {
     const docRef = await addDoc(collection(db, COLLECTION_NAMES.PRODUCT_COMMENTS), comment.toFirestore());
+    return docRef.id;
+}
+
+export async function addproductrating(rating) {
+    const docRef = await addDoc(collection(db, COLLECTION_NAMES.PRODUCT_RATING), rating.toFirestore());
     return docRef.id;
 }
 
@@ -146,78 +191,5 @@ export async function getProductPriceDescending() {
         p.set_docId(doc.id);
         products.push(p);
     });
-    return products;
-}
-
-export async function paginatedProduct(page) {
-
-    let q, documentSnapshots, next, finaldocsnap, lastVisible;
-    let products = [];
-    if(page==1)
-    {
-        q = query(collection(db, COLLECTION_NAMES.PRODUCT), orderBy("name"), limit(2));
-        documentSnapshots = await getDocs(q);
-
-        products = [];
-
-        const snapShot1 = documentSnapshots;
-        snapShot1.forEach(doc => {
-            const p = new Product(doc.data());
-            p.set_docId(doc.id);
-            products.push(p);
-        });
-        return products;
-    }
-    for (let i = 1; i < page; i++) {
-
-        q = query(collection(db, COLLECTION_NAMES.PRODUCT), orderBy("name"), limit(2 * i));
-        documentSnapshots = await getDocs(q);
-
-        products = [];
-
-        const snapShot1 = documentSnapshots;
-        snapShot1.forEach(doc => {
-            const p = new Product(doc.data());
-            p.set_docId(doc.id);
-            products.push(p);
-        });
-
-        console.log("1");
-        console.log(products);
-
-
-        lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-        //console.log("last", lastVisible);
-
-        next = query(collection(db, COLLECTION_NAMES.PRODUCT),
-            orderBy("name"),
-            startAfter(lastVisible),
-            limit(2));
-
-
-
-        finaldocsnap = await getDocs(next);
-
-        products = [];
-
-        const snapShot2 = finaldocsnap;
-        snapShot2.forEach(doc => {
-            const p = new Product(doc.data());
-            p.set_docId(doc.id);
-            products.push(p);
-        });
-        console.log("2");
-        console.log(products);
-    }
-    
-    products=[]
-    const snapShot = finaldocsnap;
-    snapShot.forEach(doc => {
-        const p = new Product(doc.data());
-        p.set_docId(doc.id);
-        products.push(p);
-    });
-    console.log("final");
-    console.log(products);
     return products;
 }

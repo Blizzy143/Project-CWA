@@ -1,7 +1,7 @@
 import { formSearch, MENU, modalallreview, root } from './elements.js';
 import { ROUTE_PATHNAMES } from '../controller/route.js';
 import * as Util from './util.js';
-import { addproductwishlist, getProductComment, getProductList, paginatedProduct } from '../controller/firestore_controller.js';
+import { addproductwishlist, getProductComment, getProductList, getProductRating,  } from '../controller/firestore_controller.js';
 import { DEV } from '../model/constants.js';
 import { currentUser } from '../controller/firebase_auth.js';
 import { cart } from './cart_page.js';
@@ -36,14 +36,29 @@ export async function home_page() {
     buildHomeScreen(products);
     let products1 =[]
 
+
 }
 
-export function buildHomeScreen(products) {
+export async function buildHomeScreen(products) {
     let html = '';
-    for (let i = 0; i < products.length; i++) {
-        html += buildProductView(products[i], i)
+    let ratings=[]
+    for (let i = 0; i < products.length; i++) {        
+        let rates=0.0
+        ratings=[]
+        try{
+            ratings=await getProductRating(products[i].docId);
+        }
+        catch(e){
+            console.log(e);
+        }
+        for(let j=1;j<ratings.length;j++)
+        {
+            rates=rates+ratings[j].rating;
+        }
+        if(ratings.length!=0)
+            rates=rates/ratings.length;
+        html += buildProductView(products[i], i,rates)
     }
-    console.log(products);
     root.innerHTML = html;
 
     const productForms = document.getElementsByClassName('form-product-qty');
@@ -105,6 +120,7 @@ export function buildHomeScreen(products) {
             else {
                 const productId = p.docId;
                 const wishlist = document.getElementById('wishlist-pdt-add');
+                console.log(wishlist);
                 const email = currentUser.email;
                 const prod_wish = new product_wishlist({
                     productId, email
@@ -125,9 +141,56 @@ export function buildHomeScreen(products) {
 
         })
     }
+
+    const productFormsReviews = document.getElementsByClassName('form-product-review');
+    for (let i = 0; i < productFormsReviews.length; i++) {
+        productFormsReviews[i].addEventListener('submit', async e => {
+            e.preventDefault();
+            const p = products[e.target.index.value];
+            let html;
+                const productId = p.docId;
+                let prod_com = []
+                try {
+                    prod_com = await getProductComment(productId);
+                    if (prod_com.length == 0) {
+                        html = '<h5>No Reviews Found!</h5>';
+                        modalallreview.body.innerHTML = html;
+                        return;
+                    }
+                }
+                catch (e) {
+                    if (DEV) console.log(e);
+                    Util.info('Failed to get the product comment list', JSON.stringify(e));
+                }
+                html = `
+                <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Review</th>
+                        <th scope="col">Commented At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                `;
+
+                for (let i = 0; i < prod_com.length; i++) {
+                    html += `
+                    <tr>
+                        <td>${prod_com[i].email}</td>
+                        <td>${prod_com[i].comment}</td>
+                        <td>${new Date(prod_com[i].timestamp).toString()}</td>
+                    </tr>
+                    `;
+                }
+
+                html += '</tbody></table>';
+                modalallreview.body.innerHTML = html;
+        })
+    }
 }
 
-export function buildProductView(product, index) {
+export function buildProductView(product, index,rates) {
     return `
     <div id="card-${product.docId}" class="card d-inline-flex" style="width: 18rem; display: inline-block;">
         <img src="${product.imageURL}" class="card-img-top">
@@ -135,7 +198,10 @@ export function buildProductView(product, index) {
             <h5 class="card-title">${product.name}</h5>
             <p class="card-text">
             ${Util.currency(product.price)}<br>
-            ${product.summary}</p>
+            ${product.summary}<br>
+            <p>Avg rating : ${rates} out of 5<br> </p>
+            
+            </p>
 
             <div class="container pt-3 bg-light ${currentUser ? 'd-block' : 'd-none'}">
                 <form method="post" class="form-product-qty">
@@ -149,14 +215,19 @@ export function buildProductView(product, index) {
                     <button class="btn btn-outline-danger" type="submit"
                         onclick="this.form.submitter='INC'">&plus;</button>
                         <div class="text-center">
-                    <button class="btn btn-outline-success d-inline-block w-44" type="submit"
-                        data-bs-toggle="modal" data-bs-target="#modal-all-review" onclick="this.form.submitter='REVIEW'">Reviews</button>                    
+                    <!--<button class="btn btn-outline-success d-inline-block w-44" type="submit"
+                        data-bs-toggle="modal" data-bs-target="#modal-all-review" onclick="this.form.submitter='REVIEW'">Reviews</button>  -->                  
                         <button class="btn btn-outline-danger" type="submit" id="wishlist-pdt-add" 
                         data-bs-toggle="modal" data-bs-target="#modal-pdt-wish" onclick="this.form.submitter='Wishlist'"><span>&hearts;</span></button> 
-                       
+                    </div>
+                </form>                
             </div>
-                </form>
-            </div>
+            
+            <form method="post" class="form-product-review">
+                    <input type="hidden" name="index" value="${index}">
+                <button class="btn btn-outline-primary d-inline-block w-44" type="submit"
+                data-bs-toggle="modal" data-bs-target="#modal-all-review" id='review-btn'>Reviews</button>
+            </form>
         </div>
     </div>
     `;

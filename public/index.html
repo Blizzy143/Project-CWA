@@ -187,6 +187,29 @@
     </div>
   </div>
 
+  <!-- Modal Update review form -->
+  <div class="modal fade" id="modal-update-review" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-update-review-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-update-review-title">Modal Update Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-update-review-body">
+          <div>
+            <form method="post" id="form-update-review">
+            <input type="textarea" name="update_review_text_box" placeholder="Update Your Review on this item:" required focused>
+            <button type="click" id="updatebtn"class="btn btn-outline-primary">Update</button>
+          </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal all reviews form -->
   <div class="modal fade" id="modal-all-review" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="modal-all-review" aria-hidden="true">
@@ -216,6 +239,27 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Form to delete a Comment/Review -->
+  <div class="modal fade" id="modal-delete-review" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modal-delete-review-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-delete-review-label">Delete Review Comment?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you Sure you want to Delete?
+        </div>
+        <div class="modal-footer">
+          <button type="submit" id="delete-review-final-button" class="btn btn-outline-danger"
+            data-bs-dismiss="modal">Yes</button>
+          <button type="click" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>

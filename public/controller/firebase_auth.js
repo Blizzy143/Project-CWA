@@ -16,16 +16,12 @@ export function addEventListeners() {
     onAuthStateChanged(auth, AuthStateChanged);
 
     Elements.modalSignin.form.addEventListener('submit', async e => {
-        e.preventDefault();//keeps from refreshing current page
+        e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
         const button = e.target.getElementsByTagName('button')[0];
         const label = Util.disableButton(button);
         
-        /*if(!Constants.adminEmails.includes(email)){
-            Util.info('Error','Only for admins',Elements.modalSignin);
-            return;
-        }*/
 
         try{
             await signInWithEmailAndPassword(auth,email,password);
