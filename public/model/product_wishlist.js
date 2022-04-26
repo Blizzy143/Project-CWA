@@ -8,7 +8,6 @@ export class product_wishlist {
         this.docId = id;
     }
     
-    //toFirestore data, format, etc
     toFirestore() {
         return {
             productId:this.productId,

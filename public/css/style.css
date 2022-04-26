@@ -5,6 +5,29 @@
     color: white;
     background-color: rgb(50, 228, 0);
 }
+.btn1 {
+    color: rgb(7, 3, 3);
+    background-color: rgb(184, 1, 1);
+}
+.btn2 {
+    color: rgb(7, 3, 3);
+    background-color: rgb(240, 144, 10);
+}
+.btn3 {
+    color: rgb(7, 3, 3);
+    background-color: rgb(232, 244, 10);
+}
+.btn4 {
+    color: rgb(7, 3, 3);
+    background-color: rgb(141, 184, 1);
+}
+.btn5 {
+    color: rgb(7, 3, 3);
+    background-color: rgb(25, 184, 1);
+}
+.card-rate {
+    color: rgb(226, 12, 12);
+}
 
 li.nav-item {
     padding-right: 20px;

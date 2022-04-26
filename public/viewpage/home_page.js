@@ -51,12 +51,12 @@ export async function buildHomeScreen(products) {
         catch(e){
             console.log(e);
         }
-        for(let j=1;j<ratings.length;j++)
+        for(let j=0;j<ratings.length;j++)
         {
             rates=rates+ratings[j].rating;
         }
         if(ratings.length!=0)
-            rates=rates/ratings.length;
+            rates=(rates/ratings.length).toFixed(2);
         html += buildProductView(products[i], i,rates)
     }
     root.innerHTML = html;
@@ -199,7 +199,7 @@ export function buildProductView(product, index,rates) {
             <p class="card-text">
             ${Util.currency(product.price)}<br>
             ${product.summary}<br>
-            <p>Avg rating : ${rates} out of 5<br> </p>
+            <p class="card-rate"> Rating : ${rates} out of 5<br> </p>
             
             </p>
 
